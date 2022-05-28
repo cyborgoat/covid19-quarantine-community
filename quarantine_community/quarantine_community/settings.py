@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'overview',
+    'plaza'
 
 ]
 
@@ -61,7 +63,7 @@ ROOT_URLCONF = 'quarantine_community.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR],
+        'DIRS': [TEMPLATE_DIR,],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,6 +125,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = 'var/www/quarantine_community/static'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.joinpath('media')
 STATICFILES_DIRS = [STATIC_DIR,]
 

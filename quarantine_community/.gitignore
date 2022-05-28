@@ -1,0 +1,9 @@
+# Dirs
+**/.idea/
+**/__pycache__/
+
+
+# Document Files
+*.pptx
+*.pdf
+*.docx
