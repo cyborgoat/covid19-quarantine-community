@@ -7,8 +7,8 @@ from rest_framework import viewsets
 from rest_framework import permissions
 
 # Create your views here.
-from plaza.forms import SpecialRequestForm
-from plaza.models import OfficialNotification, SpecialRequest
+from plaza.forms import SpecialRequestForm, SupplyRegistrationForm
+from plaza.models import OfficialNotification, SpecialRequest, SupplyRegistration
 from django.utils import timezone
 
 
@@ -25,11 +25,26 @@ class OfficialNotificationsView(ListView):
         context['now'] = timezone.now()
         return context
 
+
 class AddSpecialRequestView(CreateView):
     model = SpecialRequest
     form_class = SpecialRequestForm
     template_name = 'plaza/special-request/submit-request.html'
     # fields = '__all__'
+    success_url = '/'
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        print(form.cleaned_data)
+        return super().form_valid(form)
+
+
+class AddSupplyRegistrationView(CreateView):
+    model = SupplyRegistration
+    form_class = SupplyRegistrationForm
+    template_name = 'plaza/supply-registration/supply-registration.html'
+
     success_url = '/'
 
     def form_valid(self, form):

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <title>Signin Template · Bootstrap v5.2</title>
+    <link href="{% static 'css/plaza/special-request/form.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/bootstrap/bootstrap.bundle.js' %}"></script>
+
+</head>
+<body>
+<main class="form-signin w-100 m-auto">
+    <div class="form-group">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-primary" onclick="showAlert()">Submit</button>
+        </form>
+    </div>
+</main>
+
+
+</body>
+</html>
+<script>
+    function showAlert() {
+        alert("提交成功!工作人员会第一时间处理您的需求。");
+    }
+</script>
