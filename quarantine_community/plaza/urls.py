@@ -11,4 +11,5 @@ urlpatterns = [
     path('notifications/', views.OfficialNotificationsView.as_view(), name='official-notifications'),
     path('special-request-form/', views.AddSpecialRequestView.as_view(), name='special-request-form'),
     path('supply-registration-form/', views.AddSupplyRegistrationView.as_view(), name='supply-registration-form'),
+    path('quarantine-life-sharee/', views.QuarantineLifeShareView.as_view(), name='quarantine-life-share'),
 ]

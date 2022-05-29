@@ -52,3 +52,11 @@ class AddSupplyRegistrationView(CreateView):
         # It should return an HttpResponse.
         print(form.cleaned_data)
         return super().form_valid(form)
+
+
+class QuarantineLifeShareView(TemplateView):
+    template_name = 'plaza/quarantine-life-share/quarantine_life_share.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(QuarantineLifeShareView, self).get_context_data()
+        return context
