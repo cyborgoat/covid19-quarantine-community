@@ -9,5 +9,5 @@ app_name = "plaza"
 
 urlpatterns = [
     path('notifications/', views.OfficialNotificationsView.as_view(), name='official-notifications'),
-    path('special-request-form/', views.SpecialRequestFormView.as_view(), name='special-request-form'),
+    path('special-request-form/', views.AddSpecialRequestView.as_view(), name='special-request-form'),
 ]

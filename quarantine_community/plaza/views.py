@@ -1,14 +1,14 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.views.generic import TemplateView, ListView, FormView
+from django.views.generic import TemplateView, ListView, FormView, CreateView
 from django.contrib.auth.models import Group
 from rest_framework import viewsets
 from rest_framework import permissions
 
 # Create your views here.
-from plaza.forms import SpecialRequesstForm
-from plaza.models import OfficialNotification
+from plaza.forms import SpecialRequestForm
+from plaza.models import OfficialNotification, SpecialRequest
 from django.utils import timezone
 
 
@@ -25,9 +25,11 @@ class OfficialNotificationsView(ListView):
         context['now'] = timezone.now()
         return context
 
-class SpecialRequestFormView(FormView):
+class AddSpecialRequestView(CreateView):
+    model = SpecialRequest
+    form_class = SpecialRequestForm
     template_name = 'plaza/special-request/form.html'
-    form_class = SpecialRequesstForm
+    # fields = '__all__'
     success_url = '/'
 
     def form_valid(self, form):

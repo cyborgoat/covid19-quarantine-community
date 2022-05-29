@@ -1,11 +1,16 @@
 from django import forms
 
+from plaza.models import SpecialRequest
 
-class SpecialRequesstForm(forms.Form):
-    name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-floating'}))
-    message = forms.CharField(widget=forms.Textarea)
 
-    def send_email(self):
-        print(self.name, self.message)
-        # send email using the self.cleaned_data dictionary
-        pass
+class SpecialRequestForm(forms.ModelForm):
+    class Meta:
+        model = SpecialRequest
+        fields = ('title', 'name', 'responder', 'body')
+
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control input-lg', 'placeholder': 'First Name'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'responder': forms.Select(attrs={'class': 'form-control'}),
+            'body': forms.TextInput(attrs={'class': 'form-control'}),
+        }
