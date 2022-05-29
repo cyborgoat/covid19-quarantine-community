@@ -27,3 +27,6 @@ class SpecialRequest(models.Model):
     name = models.CharField(max_length=32)
     responder = models.ForeignKey(User,on_delete=models.CASCADE,related_name='responder')
     body = models.TextField()
+
+    def __str__(self):
+        return self.title

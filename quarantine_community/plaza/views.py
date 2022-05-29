@@ -28,7 +28,7 @@ class OfficialNotificationsView(ListView):
 class AddSpecialRequestView(CreateView):
     model = SpecialRequest
     form_class = SpecialRequestForm
-    template_name = 'plaza/special-request/form.html'
+    template_name = 'plaza/special-request/submit-request.html'
     # fields = '__all__'
     success_url = '/'
 
