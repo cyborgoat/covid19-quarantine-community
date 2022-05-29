@@ -29,6 +29,7 @@ router.register(r'covid_basic_info', oviews.CovidBasicInfoViewSet)
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', view=include('overview.urls', namespace='overview')),
+                  path('plaza/', view=include('plaza.urls', namespace='plaza')),
                   path('api/', include(router.urls)),
                   path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
