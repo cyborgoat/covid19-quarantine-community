@@ -15,7 +15,7 @@
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
-            <button class="btn btn-primary">Submit</button>
+            <button class="btn btn-primary" onclick="showAlert()">Submit</button>
         </form>
     </div>
 </main>
@@ -23,3 +23,8 @@
 
 </body>
 </html>
+<script>
+    function showAlert() {
+        alert("提交成功!工作人员会第一时间处理您的需求。");
+    }
+</script>
