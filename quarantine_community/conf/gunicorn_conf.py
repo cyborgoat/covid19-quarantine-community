@@ -6,8 +6,10 @@ Description
 -----------
 
 """
-uesr = 'www-data'
-command = '/root/miniconda3/envs/django/bin'
-pythonpath = '/root/pyCharmProjects/quarantine_community'
-bind = '172.26.38.144:8080'
+import multiprocessing
+
+user = 'root'
+command = '/root/miniconda3/envs/djangoenv/bin'
+pythonpath = '/root/pyCharmProjects/quarantine_community/'
+bind = '127.0.0.1:8057'
 workers = 3
