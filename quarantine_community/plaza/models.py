@@ -31,8 +31,10 @@ class OfficialNotification(models.Model):
 
 class SpecialRequest(models.Model):
     title = models.CharField(max_length=64)
-    name = models.CharField(max_length=32)
-    responder = models.ForeignKey(User, on_delete=models.CASCADE, related_name='responder')
+    country_yard = models.ForeignKey(CountryYard, on_delete=models.CASCADE, related_name='sr_country_yard', null=True)
+    building_unit = models.ForeignKey(BuildingUnit, on_delete=models.CASCADE, related_name='sr_building_unit',
+                                      null=True)
+    room_num = models.CharField(max_length=16,null=True)
     body = models.TextField()
 
     def __str__(self):
@@ -46,10 +48,9 @@ class SupplyItem(models.Model):
     def __str__(self):
         return self.name
 
+
 class SupplyRegistration(models.Model):
-    country_yard = models.ForeignKey(CountryYard,on_delete=models.CASCADE,related_name='country_yard')
-    building_unit = models.ForeignKey(BuildingUnit,on_delete=models.CASCADE,related_name='building_unit')
+    country_yard = models.ForeignKey(CountryYard, on_delete=models.CASCADE, related_name='country_yard')
+    building_unit = models.ForeignKey(BuildingUnit, on_delete=models.CASCADE, related_name='building_unit')
     room_num = models.CharField(max_length=16)
     items = models.ManyToManyField(SupplyItem)
-
-

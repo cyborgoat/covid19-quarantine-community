@@ -6,15 +6,25 @@ from plaza.models import SpecialRequest, SupplyRegistration, SupplyItem, Country
 class SpecialRequestForm(forms.ModelForm):
     class Meta:
         model = SpecialRequest
-        fields = ('title', 'name', 'responder', 'body')
+        fields = '__all__'
 
         widgets = {
             'title': forms.TextInput(
-                attrs={'class': 'form-control input-lg', 'placeholder': 'Enter Title'}),
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your Name'}),
-            'responder': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Report your responder'}),
+                attrs={'class': 'form-control input-lg', 'placeholder': '输入主题'}),
+            'country_yard': forms.Select(attrs={'class': 'form-select'}),
+            'building_unit': forms.Select(attrs={'class': 'form-select'}),
+            'room_num': forms.TextInput(
+                attrs={'class': 'form-control input-lg', 'placeholder': '请输入房间号'}),
             'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter your message'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(SpecialRequestForm, self).__init__(*args, **kwargs)
+        self.fields['title'].label = "主题"
+        self.fields['country_yard'].label = "所属院"
+        self.fields['building_unit'].label = "所属单元"
+        self.fields['room_num'].label = "房间号"
+        self.fields['body'].label = "详细信息"
 
 
 class SupplyRegistrationForm(forms.ModelForm):
