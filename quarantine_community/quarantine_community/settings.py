@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +26,7 @@ STATIC_DIR = BASE_DIR.joinpath("static")
 SECRET_KEY = 'django-insecure-mnxv9q0-v@ig-w$+5m90*nom4l-56@!s&(516gcnz44p9sdbsa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*', '121.43.36.13', '172.26.38.144']
 
@@ -118,8 +119,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = '/home/ubuntu/quarantine_community/static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = '/home/www/assets/quarantine_community/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.joinpath('media')
 STATICFILES_DIRS = [STATIC_DIR, ]
