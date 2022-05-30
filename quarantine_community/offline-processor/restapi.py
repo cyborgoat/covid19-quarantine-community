@@ -1,6 +1,7 @@
 import datetime
 import json
 import pathlib
+from collections import OrderedDict
 
 import numpy as np
 import requests
@@ -20,7 +21,7 @@ with open('credentials.json', 'r') as f:
     credentials = json.load(f)
 
 with open('word_dict.txt', 'r') as f:
-    word_dict = dict()
+    word_dict = OrderedDict()
     lines = f.readlines()
     for line in lines:
         words = line.strip().split(' ')
@@ -32,12 +33,18 @@ def api2df(url, file_title: str, write: bool = True):
     js = response.json()['results']
     df = pd.DataFrame.from_dict(js)
     if len(df) > 0:
-        df['created_on'] = pd.to_datetime(df['created_on']).map(datetime.datetime.date)
-        df = df.loc[df['created_on'] == today]
+        df['created_on'] = pd.to_datetime(df['created_on'])
+        df['date'] = df['created_on'].map(datetime.datetime.date)
+        df['created_on'] = df['created_on'].dt.strftime('%H:%M:%S')
+        df = df.loc[df['date'] == today]
+        df['items'] = df['items'].apply(lambda x: ','.join(x))
+
+        ordered_list = [i for i in word_dict if i in df.columns]
+        df = df[ordered_list]
     df.columns = [word_dict[i] for i in df.columns]
 
     if write:
-        df.to_excel(pathlib.Path('data', f'{file_title}-{today}.xlsx'))
+        df.to_excel(pathlib.Path('data', f'{file_title}-{today}.xlsx'), index=False)
 
     return df
 

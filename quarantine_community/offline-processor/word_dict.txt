@@ -1,11 +1,12 @@
-items 物品
+id id
 country_yard 院号
 building_unit 楼号
 building_subunit 单元号
+title 主题
+body 详情
 room_num 房间号
+items 物品
+date 生成日期
 created_on 生成时间
 resolved_by_staff 工作人员是否送达
 resolved_by_applicant 居民是否收到
-title 主题
-body 详情
-id id
