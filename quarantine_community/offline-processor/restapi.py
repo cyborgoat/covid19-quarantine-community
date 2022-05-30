@@ -27,7 +27,7 @@ with open('word_dict.txt', 'r') as f:
         word_dict[words[0]] = words[1]
 
 
-def api2df(url, file_title: str):
+def api2df(url, file_title: str, write: bool = True):
     response = requests.get(url, auth=HTTPBasicAuth(credentials['name'], credentials['password']))
     js = response.json()['results']
     df = pd.DataFrame.from_dict(js)
@@ -35,7 +35,10 @@ def api2df(url, file_title: str):
         df['created_on'] = pd.to_datetime(df['created_on']).map(datetime.datetime.date)
         df = df.loc[df['created_on'] == today]
     df.columns = [word_dict[i] for i in df.columns]
-    df.to_excel(pathlib.Path('data', f'{file_title}-{today}.xlsx'))
+
+    if write:
+        df.to_excel(pathlib.Path('data', f'{file_title}-{today}.xlsx'))
+
     return df
 
 
