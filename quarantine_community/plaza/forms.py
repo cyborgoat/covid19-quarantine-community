@@ -24,7 +24,7 @@ class SpecialRequestForm(forms.ModelForm):
         self.fields['title'].label = "主题"
         self.fields['country_yard'].label = "所属院"
         self.fields['building_unit'].label = "所属楼号"
-        self.fields['building_subunit'].label = "所属单元(不涉及则默认0)"
+        self.fields['building_subunit'].label = "所属单元(不涉及请选择0单元)"
         self.fields['room_num'].label = "房间号"
         self.fields['body'].label = "详细信息"
 
@@ -47,6 +47,6 @@ class SupplyRegistrationForm(forms.ModelForm):
         super(SupplyRegistrationForm, self).__init__(*args, **kwargs)
         self.fields['country_yard'].label = "所属院"
         self.fields['building_unit'].label = "所属楼号"
-        self.fields['building_subunit'].label = "所属单元(不涉及则默认0)"
+        self.fields['building_subunit'].label = "所属单元(不涉及请选择0单元)"
         self.fields['room_num'].label = "房间号"
         self.fields['items'].label = "所需物品"
