@@ -5,7 +5,7 @@ from overview.models import User
 
 
 class CountryYard(models.Model):
-    yard_num = models.IntegerField(blank=True, null=True)
+    yard_num = models.IntegerField()
 
     def __str__(self):
         return f'{self.yard_num}号院'
@@ -38,12 +38,10 @@ class OfficialNotification(models.Model):
 
 class SpecialRequest(models.Model):
     title = models.CharField(max_length=64)
-    country_yard = models.ForeignKey(CountryYard, on_delete=models.CASCADE, related_name='sr_country_yard', null=True)
-    building_unit = models.ForeignKey(BuildingUnit, on_delete=models.CASCADE, related_name='sr_building_unit',
-                                      null=True)
-    building_subunit = models.ForeignKey(BuildingSubUnit, on_delete=models.CASCADE, related_name='sr_building_subunit',
-                                         null=True)
-    room_num = models.CharField(max_length=16, null=True)
+    country_yard = models.ForeignKey(CountryYard, on_delete=models.CASCADE, related_name='cy_special')
+    building_unit = models.ForeignKey(BuildingUnit, on_delete=models.CASCADE, related_name='bu_special')
+    building_subunit = models.ForeignKey(BuildingSubUnit, on_delete=models.CASCADE, related_name='bs_special')
+    room_num = models.CharField(max_length=16)
     body = models.TextField()
 
     resolved_by_staff = models.BooleanField(default=False)
@@ -62,10 +60,9 @@ class SupplyItem(models.Model):
 
 
 class SupplyRegistration(models.Model):
-    country_yard = models.ForeignKey(CountryYard, on_delete=models.CASCADE, related_name='country_yard')
-    building_unit = models.ForeignKey(BuildingUnit, on_delete=models.CASCADE, related_name='building_unit')
-    building_subunit = models.ForeignKey(BuildingSubUnit, on_delete=models.CASCADE, related_name='building_subunit',
-                                         null=True)
+    country_yard = models.ForeignKey(CountryYard, on_delete=models.CASCADE, related_name='cy')
+    building_unit = models.ForeignKey(BuildingUnit, on_delete=models.CASCADE, related_name='bu')
+    building_subunit = models.ForeignKey(BuildingSubUnit, on_delete=models.CASCADE, related_name='bs')
     room_num = models.CharField(max_length=16)
     items = models.ManyToManyField(SupplyItem)
     resolved_by_staff = models.BooleanField(default=False)
@@ -73,3 +70,13 @@ class SupplyRegistration(models.Model):
 
     def __str__(self):
         return f'ticket{self.pk}-{self.country_yard}-{self.building_unit}-{self.room_num}'
+
+
+class ItemConfirmation(models.Model):
+    country_yard = models.ForeignKey(CountryYard, on_delete=models.CASCADE, related_name='cy_confirm')
+    building_unit = models.ForeignKey(BuildingUnit, on_delete=models.CASCADE, related_name='bu_confirm')
+    building_subunit = models.ForeignKey(BuildingSubUnit, on_delete=models.CASCADE, related_name='bs_confirm')
+    supply_requests = models.ManyToManyField(SupplyRegistration)
+    special_requests = models.ManyToManyField(SpecialRequest)
+
+    # def __str__(
