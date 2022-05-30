@@ -1,54 +1,8 @@
-import datetime
-import json
-import pathlib
-from collections import OrderedDict
-
-import numpy as np
-import requests
-import pandas as pd
-from requests.auth import HTTPBasicAuth
-
-today = datetime.date.today()
-end_date = datetime.date.today() - datetime.timedelta(days=1)
-
-DEBUG = False
-api_url = "http://121.43.36.132/api/" if not DEBUG else "http://127.0.0.0:8000/api/"
-
-supply_registration_url = api_url + 'supply_registration/'
-special_request_url = api_url + 'special_requests/'
-
-with open('credentials.json', 'r') as f:
-    credentials = json.load(f)
-
-with open('word_dict.txt', 'r') as f:
-    word_dict = OrderedDict()
-    lines = f.readlines()
-    for line in lines:
-        words = line.strip().split(' ')
-        word_dict[words[0]] = words[1]
-
-
-def api2df(url, file_title: str, write: bool = True):
-    response = requests.get(url, auth=HTTPBasicAuth(credentials['name'], credentials['password']))
-    js = response.json()['results']
-    df = pd.DataFrame.from_dict(js)
-    if len(df) > 0:
-        df['created_on'] = pd.to_datetime(df['created_on'])
-        df['date'] = df['created_on'].map(datetime.datetime.date)
-        df['created_on'] = df['created_on'].dt.strftime('%H:%M:%S')
-        df = df.loc[df['date'] == today]
-        df['items'] = df['items'].apply(lambda x: ','.join(x))
-
-        ordered_list = [i for i in word_dict if i in df.columns]
-        df = df[ordered_list]
-    df.columns = [word_dict[i] for i in df.columns]
-
-    if write:
-        df.to_excel(pathlib.Path('data', f'{file_title}-{today}.xlsx'), index=False)
-
-    return df
-
+from util.stat import api2df, do_supply_static
+from util.stat import special_request_url, supply_registration_url
 
 if __name__ == '__main__':
     supply_df = api2df(supply_registration_url, '必需品需求')
-    special_df = api2df(special_request_url, '特殊需求')
+    do_supply_static(supply_df, '必需品需求')
+    special_df = api2df(special_request_url, '特殊需求', special_req=True)
+    # do_supply_static(special_df, '特殊需求', special_req=True)

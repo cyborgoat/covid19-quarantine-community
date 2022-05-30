@@ -68,7 +68,7 @@ class SpecialRequestViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    queryset = Group.objects.all()
+    queryset = SpecialRequest.objects.all()
     serializer_class = SpecialRequestSerializer
     permission_classes = [permissions.IsAuthenticated]
 

@@ -50,7 +50,7 @@ class SpecialRequest(models.Model):
     resolved_by_applicant = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'ticket{self.pk}-{self.country_yard}-{self.building_unit}-{self.room_num}'
+        return f'ticket{self.pk}-{self.title}'
 
 
 class SupplyItem(models.Model):
