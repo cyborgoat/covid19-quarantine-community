@@ -1,8 +1,15 @@
+import datetime
 import json
 
 import requests
 import pandas as pd
 from requests.auth import HTTPBasicAuth
+
+start_date = datetime.date.today()
+end_date = datetime.date.today()
+
+print(start_date,end_date)
+exit()
 
 with open('credentials.json', 'r') as f:
     credentials = json.load(f)
@@ -11,7 +18,10 @@ with open('credentials.json', 'r') as f:
 def api2df(url):
     response = requests.get(url, auth=HTTPBasicAuth(credentials['name'], credentials['password']))
     js = response.json()['results']
-    return pd.DataFrame(js)
+    df = pd.DataFrame.from_dict(js)
+    if len(df) > 0:
+        df['created_on'] = (df['created_on'])
+    return df
 
 
 DEBUG = False
