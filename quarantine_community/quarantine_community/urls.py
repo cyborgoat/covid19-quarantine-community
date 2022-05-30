@@ -20,11 +20,14 @@ from rest_framework import routers
 
 from quarantine_community import settings
 from overview import views as oviews
+from plaza import views as pviews
 
 router = routers.DefaultRouter()
 router.register(r'users', oviews.UserViewSet)
 router.register(r'groups', oviews.GroupViewSet)
 router.register(r'covid_basic_info', oviews.CovidBasicInfoViewSet)
+router.register(r'supply_registration', pviews.SupplyRegistrationViewSet)
+router.register(r'special_requests', pviews.SpecialRequestViewSet)
 
 urlpatterns = [
                   path('admin/', admin.site.urls),

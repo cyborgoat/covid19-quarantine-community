@@ -11,6 +11,8 @@ from plaza.forms import SpecialRequestForm, SupplyRegistrationForm
 from plaza.models import OfficialNotification, SpecialRequest, SupplyRegistration
 from django.utils import timezone
 
+from plaza.serializers import SpecialRequestSerializer, SupplyRegistrationSerializer
+
 
 class OfficialNotificationsView(ListView):
     """Page for official notifications"""
@@ -60,3 +62,18 @@ class QuarantineLifeShareView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(QuarantineLifeShareView, self).get_context_data()
         return context
+
+
+class SpecialRequestViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = SpecialRequestSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class SupplyRegistrationViewSet(viewsets.ModelViewSet):
+    queryset = SupplyRegistration.objects.filter(resolved_by_applicant=False)
+    serializer_class = SupplyRegistrationSerializer
+    permission_classes = [permissions.IsAuthenticated]

@@ -78,5 +78,3 @@ class ItemConfirmation(models.Model):
     building_subunit = models.ForeignKey(BuildingSubUnit, on_delete=models.CASCADE, related_name='bs_confirm')
     supply_requests = models.ManyToManyField(SupplyRegistration)
     special_requests = models.ManyToManyField(SpecialRequest)
-
-    # def __str__(
