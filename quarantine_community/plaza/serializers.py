@@ -16,6 +16,10 @@ class SupplyRegistrationSerializer(serializers.ModelSerializer):
 
 
 class SpecialRequestSerializer(serializers.ModelSerializer):
+    country_yard = serializers.StringRelatedField(many=False, read_only=True)
+    building_unit = serializers.StringRelatedField(many=False, read_only=True)
+    building_subunit = serializers.StringRelatedField(many=False, read_only=True)
+
     class Meta:
         model = SpecialRequest
         fields = '__all__'
