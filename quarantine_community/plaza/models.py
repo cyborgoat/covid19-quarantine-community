@@ -44,6 +44,8 @@ class SpecialRequest(models.Model):
     room_num = models.CharField(max_length=16)
     body = models.TextField()
 
+    created_on = models.DateTimeField(auto_now=True)
+
     resolved_by_staff = models.BooleanField(default=False)
     resolved_by_applicant = models.BooleanField(default=False)
 
@@ -65,6 +67,9 @@ class SupplyRegistration(models.Model):
     building_subunit = models.ForeignKey(BuildingSubUnit, on_delete=models.CASCADE, related_name='bs')
     room_num = models.CharField(max_length=16)
     items = models.ManyToManyField(SupplyItem)
+
+    created_on = models.DateTimeField(auto_now=True)
+
     resolved_by_staff = models.BooleanField(default=False)
     resolved_by_applicant = models.BooleanField(default=False)
 
@@ -78,3 +83,5 @@ class ItemConfirmation(models.Model):
     building_subunit = models.ForeignKey(BuildingSubUnit, on_delete=models.CASCADE, related_name='bs_confirm')
     supply_requests = models.ManyToManyField(SupplyRegistration)
     special_requests = models.ManyToManyField(SpecialRequest)
+
+    created_on = models.DateTimeField(auto_now=True)
