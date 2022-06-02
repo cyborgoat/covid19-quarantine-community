@@ -1,7 +1,17 @@
 from django.contrib.auth.models import Group
 from rest_framework import serializers
 
-from plaza.models import SupplyRegistration, SpecialRequest
+from plaza.models import SupplyRegistration, SpecialRequest, DrinkingWaterRegistration
+
+
+class DrinkingWaterRegistrationSerializer(serializers.ModelSerializer):
+    country_yard = serializers.StringRelatedField(many=False, read_only=True)
+    building_unit = serializers.StringRelatedField(many=False, read_only=True)
+    building_subunit = serializers.StringRelatedField(many=False, read_only=True)
+
+    class Meta:
+        model = SupplyRegistration
+        fields = '__all__'
 
 
 class SupplyRegistrationSerializer(serializers.ModelSerializer):

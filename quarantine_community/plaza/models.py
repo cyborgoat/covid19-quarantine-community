@@ -5,6 +5,9 @@ from overview.models import User
 
 
 class CountryYard(models.Model):
+    class Meta:
+        ordering = ['yard_num']
+
     yard_num = models.IntegerField()
 
     def __str__(self):
@@ -12,6 +15,9 @@ class CountryYard(models.Model):
 
 
 class BuildingUnit(models.Model):
+    class Meta:
+        ordering = ['unit_num']
+
     unit_num = models.IntegerField(default=0)
 
     def __str__(self):
@@ -19,6 +25,9 @@ class BuildingUnit(models.Model):
 
 
 class BuildingSubUnit(models.Model):
+    class Meta:
+        ordering = ['unit_num']
+
     unit_num = models.IntegerField(default=0)
 
     def __str__(self):
@@ -37,6 +46,9 @@ class OfficialNotification(models.Model):
 
 
 class SpecialRequest(models.Model):
+    class Meta:
+        ordering = ['-created_on']
+
     title = models.CharField(max_length=64)
     country_yard = models.ForeignKey(CountryYard, on_delete=models.CASCADE, related_name='cy_special')
     building_unit = models.ForeignKey(BuildingUnit, on_delete=models.CASCADE, related_name='bu_special')
@@ -46,8 +58,8 @@ class SpecialRequest(models.Model):
 
     created_on = models.DateTimeField(auto_now=True)
 
-    resolved_by_staff = models.BooleanField(default=False)
-    resolved_by_applicant = models.BooleanField(default=False)
+    # resolved_by_staff = models.BooleanField(default=False)
+    # resolved_by_applicant = models.BooleanField(default=False)
 
     def __str__(self):
         return f'ticket{self.pk}-{self.title}'
@@ -62,6 +74,9 @@ class SupplyItem(models.Model):
 
 
 class SupplyRegistration(models.Model):
+    class Meta:
+        ordering = ['-created_on']
+
     country_yard = models.ForeignKey(CountryYard, on_delete=models.CASCADE, related_name='cy')
     building_unit = models.ForeignKey(BuildingUnit, on_delete=models.CASCADE, related_name='bu')
     building_subunit = models.ForeignKey(BuildingSubUnit, on_delete=models.CASCADE, related_name='bs')
@@ -74,10 +89,13 @@ class SupplyRegistration(models.Model):
     resolved_by_applicant = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'ticket{self.pk}-{self.country_yard}-{self.building_unit}-{self.room_num}'
+        return f'Ticket{self.pk}-{self.country_yard}-{self.building_unit}-{self.room_num}'
 
 
 class ItemConfirmation(models.Model):
+    class Meta:
+        ordering = ['-created_on']
+
     country_yard = models.ForeignKey(CountryYard, on_delete=models.CASCADE, related_name='cy_confirm')
     building_unit = models.ForeignKey(BuildingUnit, on_delete=models.CASCADE, related_name='bu_confirm')
     building_subunit = models.ForeignKey(BuildingSubUnit, on_delete=models.CASCADE, related_name='bs_confirm')
@@ -85,3 +103,18 @@ class ItemConfirmation(models.Model):
     special_requests = models.ManyToManyField(SpecialRequest)
 
     created_on = models.DateTimeField(auto_now=True)
+
+
+class DrinkingWaterRegistration(models.Model):
+    class Meta:
+        ordering = ['-created_on']
+
+    country_yard = models.ForeignKey(CountryYard, on_delete=models.CASCADE, related_name='cy_water')
+    building_unit = models.ForeignKey(BuildingUnit, on_delete=models.CASCADE, related_name='bu_water')
+    building_subunit = models.ForeignKey(BuildingSubUnit, on_delete=models.CASCADE, related_name='bs_water')
+    room_num = models.CharField(max_length=16)
+    resolved = models.BooleanField(default=False)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Ticket{self.pk}-{self.country_yard}-{self.building_unit}-{self.room_num}'

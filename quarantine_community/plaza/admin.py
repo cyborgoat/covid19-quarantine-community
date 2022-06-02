@@ -2,12 +2,18 @@ from django.contrib import admin
 
 # Register your models here.
 from plaza.models import OfficialNotification, SpecialRequest, CountryYard, BuildingUnit, SupplyRegistration, \
-    SupplyItem, BuildingSubUnit
+    SupplyItem, BuildingSubUnit, DrinkingWaterRegistration
+
+
+class WithTimeAdmin(admin.ModelAdmin):
+    readonly_fields = ('created_on',)
+
 
 admin.site.register(OfficialNotification)
-admin.site.register(SpecialRequest)
+admin.site.register(SpecialRequest, WithTimeAdmin)
 admin.site.register(CountryYard)
 admin.site.register(BuildingUnit)
 admin.site.register(BuildingSubUnit)
-admin.site.register(SupplyRegistration)
+admin.site.register(SupplyRegistration, WithTimeAdmin)
 admin.site.register(SupplyItem)
+admin.site.register(DrinkingWaterRegistration, WithTimeAdmin)

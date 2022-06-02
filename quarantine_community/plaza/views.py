@@ -7,11 +7,12 @@ from rest_framework import viewsets
 from rest_framework import permissions
 
 # Create your views here.
-from plaza.forms import SpecialRequestForm, SupplyRegistrationForm
-from plaza.models import OfficialNotification, SpecialRequest, SupplyRegistration
+from plaza.forms import SpecialRequestForm, SupplyRegistrationForm, DrinkingWaterRegistrationForm
+from plaza.models import OfficialNotification, SpecialRequest, SupplyRegistration, DrinkingWaterRegistration
 from django.utils import timezone
 
-from plaza.serializers import SpecialRequestSerializer, SupplyRegistrationSerializer
+from plaza.serializers import SpecialRequestSerializer, SupplyRegistrationSerializer, \
+    DrinkingWaterRegistrationSerializer
 
 
 class OfficialNotificationsView(ListView):
@@ -56,6 +57,20 @@ class AddSupplyRegistrationView(CreateView):
         return super().form_valid(form)
 
 
+class AddDrinkingWaterRegistrationView(CreateView):
+    model = DrinkingWaterRegistration
+    form_class = DrinkingWaterRegistrationForm
+    template_name = 'plaza/drinking-water-registration/drinking-water-registration.html'
+
+    success_url = '/'
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        print(form.cleaned_data)
+        return super().form_valid(form)
+
+
 class QuarantineLifeShareView(TemplateView):
     template_name = 'plaza/quarantine-life-share/quarantine_life_share.html'
 
@@ -76,4 +91,10 @@ class SpecialRequestViewSet(viewsets.ModelViewSet):
 class SupplyRegistrationViewSet(viewsets.ModelViewSet):
     queryset = SupplyRegistration.objects.filter(resolved_by_applicant=False)
     serializer_class = SupplyRegistrationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class DrinkingWaterRegistrationViewSet(viewsets.ModelViewSet):
+    queryset = DrinkingWaterRegistration.objects.filter(resolved=False)
+    serializer_class = DrinkingWaterRegistrationSerializer
     permission_classes = [permissions.IsAuthenticated]
