@@ -10,7 +10,7 @@ class DrinkingWaterRegistrationSerializer(serializers.ModelSerializer):
     building_subunit = serializers.StringRelatedField(many=False, read_only=True)
 
     class Meta:
-        model = SupplyRegistration
+        model = DrinkingWaterRegistration
         fields = '__all__'
 
 

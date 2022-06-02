@@ -26,8 +26,9 @@ router = routers.DefaultRouter()
 router.register(r'users', oviews.UserViewSet)
 router.register(r'groups', oviews.GroupViewSet)
 router.register(r'covid_basic_info', oviews.CovidBasicInfoViewSet)
-router.register(r'supply_registration', pviews.SupplyRegistrationViewSet)
+router.register(r'supply_requests', pviews.SupplyRegistrationViewSet)
 router.register(r'special_requests', pviews.SpecialRequestViewSet)
+router.register(r'drinking_water_requests', pviews.DrinkingWaterRegistrationViewSet)
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
