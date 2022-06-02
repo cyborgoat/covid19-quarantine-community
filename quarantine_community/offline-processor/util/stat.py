@@ -15,7 +15,7 @@ from excel.formatter import format
 today = datetime.date.today()
 end_date = datetime.date.today() - datetime.timedelta(days=1)
 
-DEBUG = False
+DEBUG = True
 api_url = "http://121.43.36.132/api/" if not DEBUG else "http://127.0.0.1:8000/api/"
 
 supply_request_url = api_url + 'supply_requests/'
@@ -50,7 +50,7 @@ def get_water_df() -> pd.DataFrame:
     return df
 
 
-def water_stat_table():
+def water_stat_table(write: bool = True):
     df = get_water_df()
     df = df.sort_values(by=['院号', '楼号', '单元号', '房间号'], ascending=True)
     total_needed = len(df)
@@ -73,23 +73,23 @@ def water_stat_table():
             matrix[j + 1][i] = val
 
     ret_df = pd.DataFrame(data=matrix, columns=tmp_res.keys())
-    out_path = pathlib.Path('data', f'瓶装水需求-{today}.xlsx')
+    if write:
+        out_path = pathlib.Path('data', f'瓶装水需求-{today}.xlsx')
 
-    writer = pd.ExcelWriter(out_path, engine='xlsxwriter')
-    ret_df.to_excel(writer, sheet_name='瓶装水统计', index=False, na_rep='NaN')
+        writer = pd.ExcelWriter(out_path, engine='xlsxwriter')
+        ret_df.to_excel(writer, sheet_name='瓶装水统计', index=False, na_rep='NaN')
 
-    cell_format = workbook.Format({'bold': True, 'font_color': 'red'})
+        cell_format = workbook.Format({'bold': True, 'font_color': 'red'})
 
-    # Auto-adjust columns' width
-    for column in ret_df:
-        column_width = 18
-        col_idx = ret_df.columns.get_loc(column)
-        writer.sheets['瓶装水统计'].set_column(col_idx, col_idx, column_width)
+        # Auto-adjust columns' width
+        for column in ret_df:
+            column_width = 18
+            col_idx = ret_df.columns.get_loc(column)
+            writer.sheets['瓶装水统计'].set_column(col_idx, col_idx, column_width)
 
-    writer.save()
-    # ret_df.to_excel(out_path, index=False)
-    # format(out_path)
-    # ret_df.to_csv(out_path)
+        writer.save()
+
+    return ret_df
 
 
 def api2df(url, file_title: str, write: bool = True, multi_req=True):
