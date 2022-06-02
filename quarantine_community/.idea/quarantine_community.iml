@@ -22,6 +22,8 @@
     <orderEntry type="library" name="tailwindcss-jit-cdn" level="application" />
     <orderEntry type="library" name="bootstrap-icons" level="application" />
     <orderEntry type="library" name="e81ce22ea6" level="application" />
+    <orderEntry type="library" name="chart.js" level="application" />
+    <orderEntry type="library" name="feather-icons" level="application" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="format" value="PLAIN" />
