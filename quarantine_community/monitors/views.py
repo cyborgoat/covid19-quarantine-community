@@ -3,10 +3,13 @@ import io
 import pandas as pd
 from django.shortcuts import render
 import mimetypes
+import datetime
 
 # Create your views here.
 from django.utils.encoding import escape_uri_path
 from django.views.generic import TemplateView
+
+from plaza.models import DrinkingWaterRegistration
 from utils.stat import water_summary_df, filename_today, get_water_df_formatted
 from io import StringIO, BytesIO
 import xlsxwriter
@@ -17,6 +20,7 @@ class DrinkingWaterView(TemplateView):
     template_name = 'monitors/drinking-water/index.html'
 
     def get_context_data(self, **kwargs):
+        today = datetime.date.today()
         context = super(DrinkingWaterView, self).get_context_data(**kwargs)
         ret_df, chart_x, chart_y = water_summary_df(write=True)
         headers = ret_df.columns
@@ -64,3 +68,7 @@ def drinking_water_download_view(request):
     response['Content-Disposition'] = f"attachment; filename={escape_uri_path(filename)}"
     # return the response
     return response
+
+
+def drinking_water_clear(request):
+    objects = DrinkingWaterRegistration.objects.update()

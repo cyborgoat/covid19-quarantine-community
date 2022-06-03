@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Junxiao Guo">
     <meta name="generator" content="Hugo 0.98.0">
-    <title>Dashboard Template · Bootstrap v5.2</title>
+    <title>饮用水统计信息</title>
     <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
     <script src="{% static 'js/bootstrap/bootstrap.bundle.js' %}"></script>
     <script src="{% static 'js/jquery/jquery-3.6.0.js' %}"></script>
@@ -77,7 +77,7 @@
     {#    <div class="row">#}
     <main class="m-auto px-5">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">饮用水统计结果</h1>
+            <h1 class="h2">{{ today|date:'y/m/d' }}饮用水统计结果</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group me-2">
                     <a class="btn btn-sm btn-outline-primary" href="{% url 'monitors:drinking-water-table-download' %}">
@@ -86,6 +86,9 @@
                     <a class="btn btn-sm btn-outline-secondary" href="{% url 'overview:overview' %}">
                         回到主页
                     </a>
+{#                    <a class="btn btn-sm btn-outline-secondary" href="{% url 'overview:overview' %}">#}
+{#                        统计清零#}
+{#                    </a>#}
                     {#                    <button type="button" class="btn btn-sm btn-outline-secondary">#}
                     {#                        Export#}
                     {#                    </button>#}
