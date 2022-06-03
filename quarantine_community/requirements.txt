@@ -2,3 +2,8 @@ django>=4.0
 djangorestframework>=3.13.1
 django-cors-headers
 pillow
+openpyxl~=3.0.9
+requests~=2.26.0
+pandas~=1.3.4
+xlsxwriter~=3.0.3
+numpy~=1.21.3

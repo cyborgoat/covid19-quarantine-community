@@ -4,14 +4,11 @@ import json
 import pathlib
 from collections import OrderedDict, defaultdict
 
-import numpy as np
 import requests
 import pandas as pd
 from requests.auth import HTTPBasicAuth
-from excel.formatter import format
-
-today = datetime.date.today()
-end_date = datetime.date.today() - datetime.timedelta(days=1)
+from xlsxwriter import workbook
+import quarantine_community.settings as ps
 
 DEBUG = False
 api_url = "http://121.43.36.132/api/" if not DEBUG else "http://127.0.0.1:8000/api/"
@@ -32,6 +29,7 @@ with open(pathlib.Path(__file__).parent.joinpath('word_dict.txt'), 'r') as f:
 
 
 def get_water_df() -> pd.DataFrame:
+    today = datetime.date.today()
     response = requests.get(drinking_water_request_url,
                             auth=HTTPBasicAuth(credentials['name'], credentials['password']))
     js = response.json()['results']
@@ -48,14 +46,13 @@ def get_water_df() -> pd.DataFrame:
     return df
 
 
-def water_stat_table():
+def get_water_df_formatted() -> pd.DataFrame:
     df = get_water_df()
     df = df.sort_values(by=['院号', '楼号', '单元号', '房间号'], ascending=True)
-    total_needed = len(df)
     tmp_res = collections.OrderedDict()
     maxlen = 0
+
     for row in df.to_dict(orient='records'):
-        print(row)
         unit_name = "" if str(row['单元号']).startswith('0') else f"{row['单元号'].replace('单元', '-')}"
         building = f"{row['院号']}-{row['楼号']}"
         if building not in tmp_res.keys():
@@ -71,12 +68,60 @@ def water_stat_table():
             matrix[j + 1][i] = val
 
     ret_df = pd.DataFrame(data=matrix, columns=tmp_res.keys())
-    out_path = pathlib.Path('data', f'瓶装水需求-{today}.xlsx')
-    ret_df.to_excel(out_path, index=False)
-    format(out_path)
+    return ret_df
+
+
+def filename_today():
+    today = datetime.date.today()
+    return ps.MEDIA_ROOT.joinpath("stat_tables").joinpath('drinking_water', f'瓶装水需求-{today}.xlsx')
+
+
+def water_summary_df(write: bool = True):
+    df = get_water_df()
+    df = df.sort_values(by=['院号', '楼号', '单元号', '房间号'], ascending=True)
+    tmp_res = collections.OrderedDict()
+    maxlen = 0
+    table_x = []
+    table_y = []
+    out_path = filename_today()
+
+    for row in df.to_dict(orient='records'):
+        unit_name = "" if str(row['单元号']).startswith('0') else f"{row['单元号'].replace('单元', '-')}"
+        building = f"{row['院号']}-{row['楼号']}"
+        if building not in tmp_res.keys():
+            tmp_res[building] = []
+        tmp_res[building].append(f"{unit_name}{row['房间号']}")
+        maxlen = max(maxlen, len(tmp_res[building]))
+    cols = len(tmp_res.keys())
+    rows = maxlen
+    matrix = [[''] * cols for _ in range(rows + 1)]
+    for i, (key, vals) in enumerate(tmp_res.items()):
+        matrix[0][i] = f"共{len(vals)}箱"
+        table_y.append(len((vals)))
+        for j, val in enumerate(vals):
+            matrix[j + 1][i] = val
+
+    ret_df = pd.DataFrame(data=matrix, columns=tmp_res.keys())
+    if write:
+        # out_path = pathlib.Path(__file__).parent.joinpath('data', f'瓶装水需求-{today}.xlsx')
+        writer = pd.ExcelWriter(out_path, engine='xlsxwriter')
+        ret_df.to_excel(writer, sheet_name='瓶装水统计', index=False, na_rep='NaN')
+
+        # Auto-adjust columns' width
+        for column in ret_df:
+            column_width = 18
+            col_idx = ret_df.columns.get_loc(column)
+            writer.sheets['瓶装水统计'].set_column(col_idx, col_idx, column_width)
+
+        writer.save()
+
+    table_x = ret_df.columns.tolist()
+    return ret_df, table_x, table_y
 
 
 def api2df(url, file_title: str, write: bool = True, multi_req=True):
+    today = datetime.date.today()
+    end_date = datetime.date.today() - datetime.timedelta(days=1)
     response = requests.get(url, auth=HTTPBasicAuth(credentials['name'], credentials['password']))
     js = response.json()['results']
     df = pd.DataFrame.from_dict(js)
@@ -100,6 +145,7 @@ def api2df(url, file_title: str, write: bool = True, multi_req=True):
 
 
 def do_supply_static(df: pd.DataFrame, file_title: str, write: bool = True, special_req=False):
+    today = datetime.date.today()
     res = {}
     key1, key2, key3, key4 = ['院号', '楼号', '单元号', '物品']
     if special_req:
@@ -136,4 +182,4 @@ if __name__ == '__main__':
     # supply_df = api2df(drinking_water_request_url, '瓶装水需求', write=False, multi_req=False)
     # special_df = api2df(special_request_url, '特殊需求')
     # do_supply_static(supply_df)
-    water_stat_table()
+    water_summary_df()
