@@ -1,3 +1,4 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 # Create your models here.
@@ -113,6 +114,22 @@ class DrinkingWaterRegistration(models.Model):
     building_unit = models.ForeignKey(BuildingUnit, on_delete=models.CASCADE, related_name='bu_water')
     building_subunit = models.ForeignKey(BuildingSubUnit, on_delete=models.CASCADE, related_name='bs_water')
     room_num = models.CharField(max_length=16)
+    resolved = models.BooleanField(default=False)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Ticket{self.pk}-{self.country_yard}-{self.building_unit}-{self.room_num}'
+
+
+class BentoBoxRequest(models.Model):
+    class Meta:
+        ordering = ['-created_on']
+
+    country_yard = models.ForeignKey(CountryYard, on_delete=models.CASCADE, related_name='cy_bento')
+    building_unit = models.ForeignKey(BuildingUnit, on_delete=models.CASCADE, related_name='bu_bento')
+    building_subunit = models.ForeignKey(BuildingSubUnit, on_delete=models.CASCADE, related_name='bs_bento')
+    room_num = models.CharField(max_length=16)
+    requested_num = models.IntegerField(default=0, validators=[MaxValueValidator(10), MinValueValidator(1)])
     resolved = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
 

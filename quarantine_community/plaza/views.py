@@ -7,12 +7,13 @@ from rest_framework import viewsets
 from rest_framework import permissions
 
 # Create your views here.
-from plaza.forms import SpecialRequestForm, SupplyRegistrationForm, DrinkingWaterRegistrationForm
-from plaza.models import OfficialNotification, SpecialRequest, SupplyRegistration, DrinkingWaterRegistration
+from plaza.forms import SpecialRequestForm, SupplyRegistrationForm, DrinkingWaterRegistrationForm, BentoBoxRequestForm
+from plaza.models import OfficialNotification, SpecialRequest, SupplyRegistration, DrinkingWaterRegistration, \
+    BentoBoxRequest
 from django.utils import timezone
 
 from plaza.serializers import SpecialRequestSerializer, SupplyRegistrationSerializer, \
-    DrinkingWaterRegistrationSerializer
+    DrinkingWaterRegistrationSerializer, BentoBoxRequestSerializer
 
 
 class OfficialNotificationsView(ListView):
@@ -71,6 +72,20 @@ class AddDrinkingWaterRegistrationView(CreateView):
         return super().form_valid(form)
 
 
+class AddBentoBoxRequestView(CreateView):
+    model = BentoBoxRequest
+    form_class = BentoBoxRequestForm
+    template_name = 'plaza/bentobox-request/bentobox-request.html'
+
+    success_url = '/'
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        print(form.cleaned_data)
+        return super().form_valid(form)
+
+
 class QuarantineLifeShareView(TemplateView):
     template_name = 'plaza/quarantine-life-share/quarantine_life_share.html'
 
@@ -97,4 +112,10 @@ class SupplyRegistrationViewSet(viewsets.ModelViewSet):
 class DrinkingWaterRegistrationViewSet(viewsets.ModelViewSet):
     queryset = DrinkingWaterRegistration.objects.filter(resolved=False)
     serializer_class = DrinkingWaterRegistrationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class BentoboxRequestViewSet(viewsets.ModelViewSet):
+    queryset = BentoBoxRequest.objects.filter(resolved=False)
+    serializer_class = BentoBoxRequestSerializer
     permission_classes = [permissions.IsAuthenticated]

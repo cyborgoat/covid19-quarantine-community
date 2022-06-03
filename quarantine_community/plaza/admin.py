@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from plaza.models import OfficialNotification, SpecialRequest, CountryYard, BuildingUnit, SupplyRegistration, \
-    SupplyItem, BuildingSubUnit, DrinkingWaterRegistration
+    SupplyItem, BuildingSubUnit, DrinkingWaterRegistration, BentoBoxRequest
 
 
 class WithTimeAdmin(admin.ModelAdmin):
@@ -17,3 +17,4 @@ admin.site.register(BuildingSubUnit)
 admin.site.register(SupplyRegistration, WithTimeAdmin)
 admin.site.register(SupplyItem)
 admin.site.register(DrinkingWaterRegistration, WithTimeAdmin)
+admin.site.register(BentoBoxRequest, WithTimeAdmin)

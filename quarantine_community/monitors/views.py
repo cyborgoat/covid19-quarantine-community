@@ -22,10 +22,13 @@ class DrinkingWaterView(TemplateView):
     def get_context_data(self, **kwargs):
         today = datetime.date.today()
         context = super(DrinkingWaterView, self).get_context_data(**kwargs)
-        ret_df, chart_x, chart_y = water_summary_df(write=True)
-        headers = ret_df.columns
-        matrix = ret_df.values.tolist()
-        total_needed = sum(chart_y)
+        try:
+            ret_df, chart_x, chart_y = water_summary_df(write=True)
+            headers = ret_df.columns
+            matrix = ret_df.values.tolist()
+            total_needed = sum(chart_y)
+        except:
+            total_needed = 0
         context.update(locals())
         return context
 

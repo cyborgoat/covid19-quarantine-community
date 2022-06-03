@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group
 from rest_framework import serializers
 
-from plaza.models import SupplyRegistration, SpecialRequest, DrinkingWaterRegistration
+from plaza.models import SupplyRegistration, SpecialRequest, DrinkingWaterRegistration, BentoBoxRequest
 
 
 class DrinkingWaterRegistrationSerializer(serializers.ModelSerializer):
@@ -11,6 +11,17 @@ class DrinkingWaterRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DrinkingWaterRegistration
+        fields = '__all__'
+
+
+class BentoBoxRequestSerializer(serializers.ModelSerializer):
+    country_yard = serializers.StringRelatedField(many=False, read_only=True)
+    building_unit = serializers.StringRelatedField(many=False, read_only=True)
+    building_subunit = serializers.StringRelatedField(many=False, read_only=True)
+    requested_num = serializers.IntegerField(default=1)
+
+    class Meta:
+        model = BentoBoxRequest
         fields = '__all__'
 
 

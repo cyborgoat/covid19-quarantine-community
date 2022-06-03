@@ -12,5 +12,6 @@ urlpatterns = [
     path('supply-registration-form/', views.AddSupplyRegistrationView.as_view(), name='supply-registration-form'),
     path('drinking-water-registration-form/', views.AddDrinkingWaterRegistrationView.as_view(),
          name='drinking-water-registration-form'),
+    path('bentobox-request-form/', views.AddBentoBoxRequestView.as_view(), name='bentobox-request-form'),
     path('quarantine-life-share/', views.QuarantineLifeShareView.as_view(), name='quarantine-life-share'),
 ]

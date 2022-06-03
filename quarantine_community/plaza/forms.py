@@ -1,7 +1,7 @@
 from django import forms
 
 from plaza.models import SpecialRequest, SupplyRegistration, SupplyItem, CountryYard, BuildingUnit, \
-    DrinkingWaterRegistration
+    DrinkingWaterRegistration, BentoBoxRequest
 
 
 class SpecialRequestForm(forms.ModelForm):
@@ -72,3 +72,27 @@ class DrinkingWaterRegistrationForm(forms.ModelForm):
         self.fields['building_unit'].label = "所属楼号"
         self.fields['building_subunit'].label = "所属单元(不涉及请选择0单元)"
         self.fields['room_num'].label = "房间号"
+
+
+class BentoBoxRequestForm(forms.ModelForm):
+    class Meta:
+        model = BentoBoxRequest
+        fields = ('country_yard', 'building_unit', 'building_subunit', 'room_num', 'requested_num')
+
+        widgets = {
+            'country_yard': forms.Select(attrs={'class': 'form-select'}),
+            'building_unit': forms.Select(attrs={'class': 'form-select'}),
+            'building_subunit': forms.Select(attrs={'class': 'form-select'}),
+            'room_num': forms.TextInput(
+                attrs={'class': 'form-control input-lg', 'placeholder': '请输入房间号'}),
+            'requested_num': forms.Select(choices=((str(x), x) for x in range(1, 10)),
+                attrs={'class': 'form-select input-lg', 'placeholder': '选择需要的盒饭个数'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(BentoBoxRequestForm, self).__init__(*args, **kwargs)
+        self.fields['country_yard'].label = "所属院"
+        self.fields['building_unit'].label = "所属楼号"
+        self.fields['building_subunit'].label = "所属单元(不涉及请选择0单元)"
+        self.fields['room_num'].label = "房间号"
+        self.fields['requested_num'].label = "所需盒饭数量"

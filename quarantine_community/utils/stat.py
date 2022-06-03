@@ -10,7 +10,7 @@ from requests.auth import HTTPBasicAuth
 from xlsxwriter import workbook
 import quarantine_community.settings as ps
 
-DEBUG = False
+DEBUG = True
 api_url = "http://121.43.36.132/api/" if not DEBUG else "http://127.0.0.1:8000/api/"
 
 supply_request_url = api_url + 'supply_requests/'
