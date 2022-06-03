@@ -2,6 +2,7 @@ import io
 
 import pandas as pd
 from django.shortcuts import render
+import mimetypes
 
 # Create your views here.
 from django.utils.encoding import escape_uri_path
@@ -56,7 +57,8 @@ def drinking_water_download_view(request):
     # filename = 'django-simple.xlsx'
     response = HttpResponse(
         output,
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        # content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        content_type=mimetypes.guess_type(filename),
     )
 
     response['Content-Disposition'] = f"attachment; filename={escape_uri_path(filename)}"
