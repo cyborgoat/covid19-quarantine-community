@@ -1,3 +1,6 @@
+import datetime
+
+import pytz
 from django.shortcuts import render
 
 # Create your views here.
@@ -70,6 +73,13 @@ class AddDrinkingWaterRegistrationView(CreateView):
         # It should return an HttpResponse.
         print(form.cleaned_data)
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(AddDrinkingWaterRegistrationView, self).get_context_data()
+        tz = pytz.timezone('Asia/Shanghai')
+        beijing_now = datetime.datetime.now(tz)
+        context.update(time_now=beijing_now)
+        return context
 
 
 class AddBentoBoxRequestView(CreateView):

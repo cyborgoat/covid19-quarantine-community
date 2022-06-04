@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 {% load static %}
+{% load time_utils %}
 <head>
     <meta charset="utf-8">
     <title>必需品需求申请</title>
@@ -14,18 +15,26 @@
 <body style="padding: 0px 0px">
 <main class="form-signin w-100 m-auto mt-0">
     {% include 'plaza/components/header.html' %}
-    <div class="py-5 text-center">
-        <i class="fa-solid fa-bottle-water fa-3x"></i>
-        <h2>瓶装水申请</h2>
-        <p class="lead">请务必保证您所填写的房间信息正确，房间号不必包含院号/楼号，如8号院3号楼107房间，在房间号处仅需填写107。</p>
-    </div>
-    <div class="form-group">
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="btn btn-lg btn-primary justify-content-center m-auto" onclick="showAlert()">提交</button>
-        </form>
-    </div>
+    {% if time_now|passed_ddl %}
+        <div class="py-5 text-center">
+            <i class="fa-solid fa-bottle-water fa-3x"></i>
+            <h2>瓶装水申请</h2>
+            <p class="lead">请务必保证您所填写的房间信息正确，房间号不必包含院号/楼号，如8号院3号楼107房间，在房间号处仅需填写107。</p>
+        </div>
+        <div class="form-group">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-lg btn-primary justify-content-center m-auto" onclick="showAlert()">提交</button>
+            </form>
+        </div>
+    {% else %}
+        <div class="text-center">
+            <i class="fa-solid fa-clock fa-3x"></i>
+            <h3>目前不在申请提交时间段内</h3>
+            <p> 需求提交时间段为当日0:00AM - 11:59AM</p>
+        </div>
+    {% endif %}
 </main>
 
 
