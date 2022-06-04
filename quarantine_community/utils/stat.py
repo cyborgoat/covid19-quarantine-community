@@ -33,7 +33,8 @@ def get_water_df() -> pd.DataFrame:
     response = requests.get(drinking_water_request_url,
                             auth=HTTPBasicAuth(credentials['name'], credentials['password']))
     js = response.json()['results']
-    df = pd.DataFrame.from_dict(js)
+    df = pd.DataFrame.from_dict(js).drop_duplicates(
+        subset=['country_yard', 'building_unit', 'building_subunit', 'room_num'])
     df['created_on'] = pd.to_datetime(df['created_on'])
     df['date'] = df['created_on'].map(datetime.datetime.date)
     df = df.loc[df['date'] == today]
@@ -42,7 +43,6 @@ def get_water_df() -> pd.DataFrame:
     ordered_list = [i for i in word_dict if i in df.columns]
     df = df[ordered_list]
     df.columns = [word_dict[i] for i in df.columns]
-    # print(df)
     return df
 
 
@@ -137,7 +137,6 @@ def api2df(url, file_title: str, write: bool = True, multi_req=True):
         ordered_list = [i for i in word_dict if i in df.columns]
         df = df[ordered_list]
     df.columns = [word_dict[i] for i in df.columns]
-    print(df)
     if write:
         df.to_excel(pathlib.Path('data', f'{file_title}-{today}.xlsx'), index=False)
 
@@ -182,4 +181,7 @@ if __name__ == '__main__':
     # supply_df = api2df(drinking_water_request_url, '瓶装水需求', write=False, multi_req=False)
     # special_df = api2df(special_request_url, '特殊需求')
     # do_supply_static(supply_df)
-    water_summary_df()
+    df = get_water_df_formatted()
+    print(df)
+    ret_df, table_x, table_y = water_summary_df()
+    print(ret_df, table_x, table_y)
