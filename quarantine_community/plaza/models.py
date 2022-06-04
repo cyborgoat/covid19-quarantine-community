@@ -90,7 +90,7 @@ class SupplyRegistration(models.Model):
     resolved_by_applicant = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'Ticket{self.pk}-{self.country_yard}-{self.building_unit}-{self.room_num}'
+        return f'ID{self.pk}-{self.country_yard}-{self.building_unit}-{self.room_num}'
 
 
 class ItemConfirmation(models.Model):
@@ -118,7 +118,7 @@ class DrinkingWaterRegistration(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Ticket{self.pk}-{self.country_yard}-{self.building_unit}-{self.room_num}'
+        return f'ID{self.pk}-{self.country_yard}-{self.building_unit}-{self.room_num}'
 
 
 class BentoBoxRequest(models.Model):
@@ -134,4 +134,4 @@ class BentoBoxRequest(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Ticket{self.pk}-{self.country_yard}-{self.building_unit}-{self.room_num}'
+        return f'ID{self.pk}-{self.country_yard}-{self.building_unit}-{self.room_num}'
