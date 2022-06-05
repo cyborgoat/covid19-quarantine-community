@@ -7,7 +7,7 @@ register = template.Library()
 
 @register.filter(name='passed_ddl')
 def passed_ddl(time: datetime.datetime):
-    return 0 < time.hour < 12
+    return 8 <= time.hour < 12
 
 
 if __name__ == '__main__':

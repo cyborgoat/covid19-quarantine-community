@@ -157,15 +157,15 @@
         const ctx = document.getElementById('myChart')
         // eslint-disable-next-line no-unused-vars
         const myChart = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels:{{ chart_x|safe }},
                 datasets: [{
                     data: {{ chart_y|safe }},
                     lineTension: 0,
-                    backgroundColor: 'transparent',
+                    backgroundColor:'rgba(54, 162, 235, 0.2)',
                     borderColor: '#007bff',
-                    borderWidth: 4,
+                    borderWidth: 2,
                     pointBackgroundColor: '#007bff'
                 }]
             },
@@ -173,7 +173,7 @@
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: false
+                            beginAtZero: true
                         }
                     }]
                 },
