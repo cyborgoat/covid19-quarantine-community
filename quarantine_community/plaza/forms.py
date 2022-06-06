@@ -1,7 +1,7 @@
 from django import forms
 
 from plaza.models import SpecialRequest, SupplyRegistration, SupplyItem, CountryYard, BuildingUnit, \
-    DrinkingWaterRegistration, BentoBoxRequest
+    DrinkingWaterRegistration, BentoBoxRequest, BuildingSubUnit
 
 
 class SpecialRequestForm(forms.ModelForm):
@@ -71,6 +71,8 @@ class DrinkingWaterRegistrationForm(forms.ModelForm):
         self.fields['country_yard'].label = "所属院"
         self.fields['building_unit'].label = "所属楼号"
         self.fields['building_subunit'].label = "所属单元(不涉及请选择0单元)"
+        # self.fields['building_subunit'].required = False
+        self.fields['building_subunit'].initial = BuildingSubUnit.objects.filter(unit_num=0)[0]
         self.fields['room_num'].label = "房间号"
 
 
@@ -86,7 +88,7 @@ class BentoBoxRequestForm(forms.ModelForm):
             'room_num': forms.TextInput(
                 attrs={'class': 'form-control input-lg', 'placeholder': '请输入房间号'}),
             'requested_num': forms.Select(choices=((str(x), x) for x in range(1, 10)),
-                attrs={'class': 'form-select input-lg', 'placeholder': '选择需要的盒饭个数'}),
+                                          attrs={'class': 'form-select input-lg', 'placeholder': '选择需要的盒饭个数'}),
         }
 
     def __init__(self, *args, **kwargs):
